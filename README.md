@@ -1,4 +1,4 @@
-# create-textmode.js (✿◠‿◠)
+# create-textmode (✿◠‿◠)
 
 <div align="center">
 
