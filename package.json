@@ -1,6 +1,6 @@
 {
   "name": "create-textmode.js",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Scaffold textmode.js projects with zero friction",
   "type": "module",
   "bin": {
