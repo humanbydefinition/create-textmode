@@ -1,15 +1,13 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { readFile } from 'fs/promises';
-import minimist from 'minimist';
 import kleur from 'kleur';
-import boxen from 'boxen';
 import { intro, outro, spinner, log } from '@clack/prompts';
-import { HEADER, templates } from './constants.js';
 import { detectPackageManager, pmCommands } from './packageManager.js';
 import { isEmptyDir, pathExists, scaffoldTemplate } from './fs-utils.js';
 import { runCommand, runCommandLogged } from './runCommand.js';
 import { printUsage } from './usage.js';
+import { templates } from './constants.js';
 import {
   promptInstall,
   promptProjectName,
@@ -19,65 +17,13 @@ import {
   suggestProjectName,
   promptTextmodeVersion
 } from './prompts.js';
-import { getTextmodeVersions } from './versions.js';
+import { printHeader } from './banner.js';
+import { parseArgv, ensureKnownTemplate } from './args.js';
+import { resolveTextmodeVersion } from './textmodeVersion.js';
+import { printSummary } from './summary.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-const SPLIT_FLAP_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@%&/\\<>[]=+*';
-
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-function randomFlapChar() {
-  const idx = Math.floor(Math.random() * SPLIT_FLAP_CHARS.length);
-  return SPLIT_FLAP_CHARS[idx];
-}
-
-async function animateSplitFlap(lines, { flips = 16, frameDelay = 32, columnStagger = 6 } = {}) {
-  const canAnimate = process.stdout.isTTY && process.env.CI !== 'true';
-  if (!canAnimate) {
-    console.log(kleur.cyan(lines.join('\n')));
-    return;
-  }
-
-  const lineCount = lines.length;
-  const blankFrame = lines.map((line) => line.replace(/[^\s]/g, ' '));
-  let firstRender = true;
-
-  const render = (frame) => {
-    if (!firstRender) {
-      process.stdout.write(`\x1b[${lineCount}F`);
-    } else {
-      firstRender = false;
-    }
-    process.stdout.write(frame.join('\n'));
-    process.stdout.write('\n');
-  };
-
-  render(blankFrame);
-
-  for (let flip = 0; flip < flips; flip++) {
-    const frameLines = lines.map((line) => {
-      const chars = line.split('').map((ch, idx) => {
-        if (ch === ' ') return ' ';
-        const shouldSettle = flip >= flips - 2 || flip > Math.floor(idx / columnStagger);
-        return shouldSettle ? ch : randomFlapChar();
-      });
-      return kleur.cyan(chars.join(''));
-    });
-    render(frameLines);
-    await sleep(frameDelay + flip * 6);
-  }
-
-  render(lines.map((line) => kleur.cyan(line)));
-}
-
-async function printHeader() {
-  const headerLines = HEADER.trim().split('\n');
-  console.log('');
-  await animateSplitFlap(headerLines);
-  console.log('');
-}
 
 function ensureKnownTemplate(name) {
   if (!name) return;
@@ -91,21 +37,12 @@ function ensureKnownTemplate(name) {
 
 export async function run() {
   await printHeader();
-  intro(kleur.cyan('Welcome to textmode.js - let’s scaffold a new project!'));
+  intro(
+    kleur.cyan('Welcome to textmode.js - let’s scaffold a new project! ✿  ') +
+      kleur.gray('(Press Ctrl+C at any time to cancel.)')
+  );
 
-  const argv = minimist(process.argv.slice(2), {
-    alias: {
-      h: 'help',
-      t: 'template',
-      n: 'name',
-      f: 'force',
-      v: 'version',
-      tv: 'textmode-version'
-    },
-    string: ['template', 'name', 'pm', 'textmode-version'],
-    boolean: ['help', 'force', 'version', 'install', 'run', 'no-install', 'no-run'],
-    default: { install: null, run: null }
-  });
+  const argv = parseArgv(process.argv.slice(2));
 
   if (argv.help) {
     printUsage();
@@ -137,44 +74,10 @@ export async function run() {
 
   // --- Resolve textmode.js version ---
   const requestedTextmodeVersion = argv['textmode-version'];
-  let textmodeVersion = 'latest';
-  let stableVersions = [];
-
-  const versionSpinner = spinner();
-  versionSpinner.start('Fetching textmode.js versions...');
-  try {
-    stableVersions = await getTextmodeVersions();
-    if (stableVersions.length === 0) throw new Error('No versions found');
-    versionSpinner.stop('Fetched textmode.js versions.');
-  } catch (err) {
-    versionSpinner.stop('Could not fetch versions.');
-    log.warn('Using latest version as fallback.');
-    stableVersions = [];
-    textmodeVersion = 'latest';
-  }
-
-  const latestVersion = stableVersions[0];
-  const availableOptions = [
-    {
-      value: 'latest',
-      label: latestVersion ? `latest (${latestVersion})` : 'latest (recommended)'
-    },
-    ...stableVersions.slice(1).map((v) => ({ value: v, label: v }))
-  ];
-
-  if (requestedTextmodeVersion) {
-    const found = availableOptions.find((opt) => opt.value === requestedTextmodeVersion);
-    if (found) {
-      textmodeVersion = requestedTextmodeVersion;
-    } else if (stableVersions.includes(requestedTextmodeVersion)) {
-      textmodeVersion = requestedTextmodeVersion;
-    } else {
-      log.warn(`Requested textmode.js@${requestedTextmodeVersion} not found; using latest instead.`);
-      textmodeVersion = 'latest';
-    }
-  } else if (stableVersions.length > 0) {
-    textmodeVersion = await promptTextmodeVersion(availableOptions);
-  }
+  const { textmodeVersion } = await resolveTextmodeVersion(
+    requestedTextmodeVersion,
+    promptTextmodeVersion
+  );
 
   // --- Pre-scaffold checks ---
   const pm = argv.pm || detectPackageManager();
@@ -253,26 +156,9 @@ export async function run() {
   }
 
   // --- Summary ---
-  const installCmd = `${pm} ${pmCmds.install.join(' ')}`;
-  const runCmd = `${pm} ${pmCmds.runDev.join(' ')}`;
-
-  const steps = [
-    `cd ${projectName}`,
-    installDone ? `✓ already ran ${installCmd}` : installCmd,
-    runDone ? `✓ dev server is running (${runCmd})` : runCmd
-  ]
-    .filter(Boolean)
-    .join('\n');
-
-  const boxed = boxen(`Next steps:\n${steps}`, {
-    padding: { top: 0, bottom: 0, left: 2, right: 2 },
-    margin: { top: 0, bottom: 0 },
-    borderStyle: 'round',
-    borderColor: 'cyan'
-  });
-
-  console.log(boxed);
-  outro(kleur.green('Enjoy textmode.js!'));
+  log.message('');
+  printSummary({ projectName, pm, pmCmds, installDone, runDone });
+  outro(kleur.green('Enjoy textmode.js! ツ'));
 }
 
 export default run;
