@@ -67,32 +67,24 @@ export async function run() {
     return;
   }
 
+  // --- Gather project info ---
   let projectName = argv._[0] || argv.name;
   if (!projectName) {
     const suggested = suggestProjectName();
     projectName = await promptProjectName(suggested);
-    if (!projectName) {
-      outro('No project name provided.');
-      return;
-    }
   }
   const targetDir = path.resolve(process.cwd(), projectName);
 
   ensureKnownTemplate(argv.template);
   let templateName = argv.template;
-
   if (!templateName) {
     templateName = await promptTemplate();
-    if (!templateName) {
-      outro('No template selected.');
-      return;
-    }
   }
 
   const template = templates.find((t) => t.name === templateName);
   const templateDir = path.join(__dirname, '..', 'templates', template.dir);
 
-  // Resolve textmode.js version
+  // --- Resolve textmode.js version ---
   const requestedTextmodeVersion = argv['textmode-version'];
   let textmodeVersion = 'latest';
   let stableVersions = [];
@@ -104,7 +96,7 @@ export async function run() {
     if (stableVersions.length === 0) throw new Error('No versions found');
     versionSpinner.stop('Fetched textmode.js versions.');
   } catch (err) {
-    versionSpinner.stop('Could not fetch textmode.js versions; defaulting to latest.');
+    versionSpinner.stop('Could not fetch versions.');
     log.warn('Using latest version as fallback.');
     stableVersions = [];
     textmodeVersion = 'latest';
@@ -130,37 +122,30 @@ export async function run() {
       textmodeVersion = 'latest';
     }
   } else if (stableVersions.length > 0) {
-    const choice = await promptTextmodeVersion(availableOptions);
-    if (choice === null) {
-      outro('Cancelled.');
-      return;
-    }
-    textmodeVersion = choice;
+    textmodeVersion = await promptTextmodeVersion(availableOptions);
   }
 
+  // --- Pre-scaffold checks ---
   const pm = argv.pm || detectPackageManager();
   const pmCmds = pmCommands(pm);
 
   const targetExists = await pathExists(targetDir);
   if (targetExists && !(await isEmptyDir(targetDir)) && !argv.force) {
-    const ok = await promptOverwrite(targetDir);
-    if (ok === null) {
-      outro('Cancelled.');
-      return;
-    }
-    if (!ok) {
+    const overwrite = await promptOverwrite(targetDir);
+    if (!overwrite) {
       outro('Aborted.');
       return;
     }
   }
 
+  // --- Scaffold project ---
   const scaffoldSpin = spinner();
   scaffoldSpin.start('Scaffolding project...');
   await scaffoldTemplate({ templateDir, targetDir, projectName, textmodeVersion });
   scaffoldSpin.stop('Scaffold complete.');
 
+  // --- Install dependencies ---
   let installDone = false;
-  let runDone = false;
 
   const userInstall = argv.install;
   const userNoInstall = argv['no-install'];
@@ -168,26 +153,22 @@ export async function run() {
   let doInstall = userInstall === true;
 
   if (!hasInstallFlag) {
-    const decision = await promptInstall(pm);
-    if (decision === null) {
-      outro('Cancelled.');
-      return;
-    }
-    doInstall = decision;
+    doInstall = await promptInstall(pm);
   }
 
   if (doInstall) {
-    const installSpin = spinner();
-    installSpin.start(`Installing dependencies with ${pm}...`);
+    log.step(`Installing dependencies with ${pm}...`);
     try {
       await runCommand(pm, pmCmds.install, targetDir);
       installDone = true;
-      installSpin.stop('Dependencies installed.');
+      log.success('Dependencies installed.');
     } catch (err) {
-      installSpin.stop('Dependency installation failed.');
-      log.error(err.message || String(err));
+      log.error(`Dependency installation failed: ${err.message || err}`);
     }
   }
+
+  // --- Run dev server ---
+  let runDone = false;
 
   if (installDone) {
     const userRun = argv.run;
@@ -196,19 +177,12 @@ export async function run() {
     let doRun = userRun === true;
 
     if (!hasRunFlag) {
-      const decision = await promptRun(pm);
-      if (decision === null) {
-        outro('Cancelled.');
-        return;
-      }
-      doRun = decision;
+      doRun = await promptRun(pm);
     }
 
     if (doRun) {
-      const runSpin = spinner();
-      runSpin.start(`Starting dev server with ${pm}...`);
+      log.step('Starting dev server...');
       try {
-        runSpin.stop('Dev server starting...');
         await runCommand(pm, pmCmds.runDev, targetDir);
         runDone = true;
       } catch (err) {
@@ -217,6 +191,7 @@ export async function run() {
     }
   }
 
+  // --- Summary ---
   const installCmd = `${pm} ${pmCmds.install.join(' ')}`;
   const runCmd = `${pm} ${pmCmds.runDev.join(' ')}`;
 
@@ -230,7 +205,7 @@ export async function run() {
 
   const boxed = boxen(`Next steps:\n${steps}`, {
     padding: { top: 0, bottom: 0, left: 2, right: 2 },
-    margin: { top: 1, bottom: 1 },
+    margin: { top: 0, bottom: 0 },
     borderStyle: 'round',
     borderColor: 'cyan'
   });

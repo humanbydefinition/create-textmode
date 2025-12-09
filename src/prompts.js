@@ -1,8 +1,21 @@
 import path from 'path';
-import { confirm, isCancel, select, text } from '@clack/prompts';
+import { confirm, isCancel, cancel, select, text } from '@clack/prompts';
 import kleur from 'kleur';
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
 import { templates } from './constants.js';
+
+/**
+ * Handle user cancellation uniformly.
+ * @param {unknown} value - The value returned from a prompt.
+ * @returns {boolean} True if the user cancelled.
+ */
+export function handleCancel(value) {
+  if (isCancel(value)) {
+    cancel('Operation cancelled.');
+    process.exit(0);
+  }
+  return false;
+}
 
 export async function promptTemplate() {
   const choice = await select({
@@ -11,7 +24,7 @@ export async function promptTemplate() {
     initialValue: templates[0].name
   });
 
-  if (isCancel(choice)) return null;
+  handleCancel(choice);
   return choice;
 }
 
@@ -30,7 +43,7 @@ export async function promptProjectName(defaultName) {
     validate: (value) => (value && value.trim().length > 0 ? undefined : 'Name cannot be empty')
   });
 
-  if (isCancel(name)) return null;
+  handleCancel(name);
   return name.trim();
 }
 
@@ -40,7 +53,7 @@ export async function promptOverwrite(targetDir) {
     initialValue: false
   });
 
-  if (isCancel(response)) return null;
+  handleCancel(response);
   return response;
 }
 
@@ -50,7 +63,7 @@ export async function promptInstall(pm) {
     initialValue: true
   });
 
-  if (isCancel(decision)) return null;
+  handleCancel(decision);
   return decision;
 }
 
@@ -60,7 +73,7 @@ export async function promptRun(pm) {
     initialValue: false
   });
 
-  if (isCancel(decision)) return null;
+  handleCancel(decision);
   return decision;
 }
 
@@ -69,9 +82,9 @@ export async function promptTextmodeVersion(options) {
     message: `${kleur.cyan('Select textmode.js version')} ${kleur.gray('(latest recommended)')}`,
     options,
     initialValue: options[0]?.value,
-    maxItems: 6
+    maxItems: 5
   });
 
-  if (isCancel(choice)) return null;
+  handleCancel(choice);
   return choice;
 }
