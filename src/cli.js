@@ -25,16 +25,6 @@ import { printSummary } from './summary.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-function ensureKnownTemplate(name) {
-  if (!name) return;
-  const found = templates.find((t) => t.name === name);
-  if (found) return;
-
-  console.error(kleur.red(`Unknown template: ${name}`));
-  printUsage();
-  process.exit(1);
-}
-
 export async function run() {
   await printHeader();
   intro(
