@@ -1,6 +1,6 @@
 {
   "name": "create-textmode.js",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Scaffold textmode.js projects via npm create textmode",
   "type": "module",
   "bin": {
