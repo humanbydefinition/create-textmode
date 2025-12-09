@@ -8,10 +8,8 @@ export const HEADER = `
 `;
 
 export const templates = [
-  { name: 'vanilla-js', label: 'Vanilla JS (Vite)', dir: 'vanilla-js' },
-  { name: 'vanilla-ts', label: 'Vanilla TS (Vite)', dir: 'vanilla-ts' },
-  { name: 'react', label: 'React (Vite)', dir: 'react' },
-  { name: 'vue', label: 'Vue 3 (Vite)', dir: 'vue' }
+  { name: 'vanilla-js', label: 'Vanilla JavaScript (vite)', dir: 'vanilla-js' },
+  { name: 'vanilla-ts', label: 'Vanilla TypeScript (vite)', dir: 'vanilla-ts' },
 ];
 
 // File name patterns considered text for placeholder replacement.

@@ -22,8 +22,6 @@ npm create textmode@latest my-textmode-app -- --template react
 
 - `vanilla-js` – Vite + plain JavaScript starter
 - `vanilla-ts` – Vite + TypeScript starter
-- `react` – React + Vite starter
-- `vue` – Vue 3 + Vite starter
 
 ## Options
 
