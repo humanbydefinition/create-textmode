@@ -25,13 +25,13 @@
   ],
   "author": "humanbydefinition",
   "license": "MIT",
-  "homepage": "https://github.com/humanbydefinition/create-textmode.js#readme",
+  "homepage": "https://github.com/humanbydefinition/create-textmode#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/humanbydefinition/create-textmode.js.git"
+    "url": "git+https://github.com/humanbydefinition/create-textmode.git"
   },
   "bugs": {
-    "url": "https://github.com/humanbydefinition/create-textmode.js/issues"
+    "url": "https://github.com/humanbydefinition/create-textmode/issues"
   },
   "publishConfig": {
     "access": "public"
