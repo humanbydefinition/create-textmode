@@ -1,10 +1,10 @@
 {
-  "name": "create-textmode.js",
+  "name": "create-textmode",
   "version": "1.0.2",
   "description": "Scaffold textmode.js projects with zero friction",
   "type": "module",
   "bin": {
-    "create-textmode.js": "bin/index.js"
+    "create-textmode": "bin/index.js"
   },
   "files": [
     "bin",
