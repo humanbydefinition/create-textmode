@@ -78,9 +78,3 @@ node bin/index.js demo --template vanilla-js --pm pnpm --no-install --no-run
 node bin/index.js
 # ...
 ```
-
-## Publishing
-
-- Package name is `create-textmode.js`, so users can run `npm create textmode.js@latest …` (dots are allowed, just uncommon). If you prefer the dotless command, rename the package to `create-textmode` and users will run `npm create textmode@latest …` instead.
-- Before publishing: bump `version`, ensure the shebang stays in `bin/index.js`, and run `npm pack` to verify the tarball contents.
-- Publish steps: `npm login` once, then `npm publish` from the repo root (public by default via `publishConfig.access`).
