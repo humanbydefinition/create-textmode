@@ -29,8 +29,13 @@ npm create textmode@latest my-textmode-app -- --template react
 
 - `--template <name>`: choose one of the templates above (will prompt if omitted)
 - `--name <projectName>` or first positional arg: directory / package name (default: `textmode-app`)
+- `--textmode-version <ver>`: pin a specific textmode.js version (defaults to latest; will prompt if omitted)
+- `--pm <npm|pnpm|yarn|bun>`: force a package manager (auto-detected if omitted)
+- `--install/--no-install`: install dependencies after scaffold (prompts if omitted)
+- `--run/--no-run`: start the dev server after install (prompts if omitted)
 - `--force`: allow using an existing non-empty directory
 - `--help`: show usage
+- `--version`: show the CLI version
 
 ## Local development
 
