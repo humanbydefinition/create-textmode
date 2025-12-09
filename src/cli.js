@@ -33,7 +33,7 @@ function randomFlapChar() {
   return SPLIT_FLAP_CHARS[idx];
 }
 
-async function animateSplitFlap(lines, { flips = 7, frameDelay = 30, columnStagger = 6 } = {}) {
+async function animateSplitFlap(lines, { flips = 16, frameDelay = 32, columnStagger = 6 } = {}) {
   const canAnimate = process.stdout.isTTY && process.env.CI !== 'true';
   if (!canAnimate) {
     console.log(kleur.cyan(lines.join('\n')));
