@@ -19,7 +19,7 @@ export function printSummary({ projectName, pm, pmCmds, installDone, runDone }) 
     kleur.bold().cyan('Helpful links:'),
     `${kleur.cyan('  Documentation:')} https://code.textmode.art`,
     `${kleur.cyan('  Community:')} https://discord.gg/sjrw8QXNks`,
-    `${kleur.cyan('  CLI issues:')} https://github.com/humanbydefinition/create-textmode.js/issues`
+    `${kleur.cyan('  CLI issues:')} https://github.com/humanbydefinition/create-textmode/issues`
   ].join('\n');
 
   const boxed = boxen(`${kleur.bold().cyan('Next steps:')}\n${steps}${infoLines}`, {
