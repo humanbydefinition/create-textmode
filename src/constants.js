@@ -10,6 +10,8 @@ export const HEADER = `
 export const templates = [
   { name: 'vanilla-js', label: 'Vanilla JavaScript (vite)', dir: 'vanilla-js' },
   { name: 'vanilla-ts', label: 'Vanilla TypeScript (vite)', dir: 'vanilla-ts' },
+  { name: 'vanilla-js-tweakpane', label: 'Vanilla JavaScript + Tweakpane (vite)', dir: 'vanilla-js-tweakpane' },
+  { name: 'vanilla-ts-tweakpane', label: 'Vanilla TypeScript + Tweakpane (vite)', dir: 'vanilla-ts-tweakpane' }
 ];
 
 // File name patterns considered text for placeholder replacement.
