@@ -22,12 +22,12 @@ function fetchJson(url) {
   });
 }
 
-function isStable(version) {
+export function isStable(version) {
   // Exclude prerelease tags like -beta, -rc, etc.
   return !version.includes('-');
 }
 
-function compareSemverDesc(a, b) {
+export function compareSemverDesc(a, b) {
   const pa = a.split('.').map(Number);
   const pb = b.split('.').map(Number);
   for (let i = 0; i < Math.max(pa.length, pb.length); i += 1) {
