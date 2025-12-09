@@ -1,8 +1,31 @@
-# create-textmode
+# create-textmode.js (✿◠‿◠)
 
-A zero-friction scaffolder for `textmode.js` apps using the `npm create` convention.
+<div align="center">
 
-## Usage
+A zero-friction scaffolder for `textmode.js`.
+
+| [![JavaScript](https://img.shields.io/badge/JavaScript-323330?logo=javascript&logoColor=F7DF1E)](https://developer.mozilla.org/docs/Web/JavaScript) [![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/) | [![docs](https://img.shields.io/badge/docs-vitepress-646cff?logo=vitepress&logoColor=white)](https://code.textmode.art/) [![Discord](https://img.shields.io/discord/1357070706181017691?color=5865F2&label=Discord&logo=discord&logoColor=white)](https://discord.gg/sjrw8QXNks) [![textmode.js](https://img.shields.io/badge/github-textmode.js-111827?logo=github&logoColor=white)](https://github.com/humanbydefinition/textmode.js) | [![ko-fi](https://shields.io/badge/ko--fi-donate-ff5f5f?logo=ko-fi)](https://ko-fi.com/V7V8JG2FY) [![Github-sponsors](https://img.shields.io/badge/sponsor-30363D?logo=GitHub-Sponsors&logoColor=#EA4AAA)](https://github.com/sponsors/humanbydefinition) |
+|:-------------|:-------------|:-------------|
+
+</div>
+
+<br />
+
+`create-textmode.js` is a command-line tool to quickly scaffold new projects using `textmode.js` with sensible defaults and minimal friction.
+
+Just run the CLI via `npm create textmode@latest` or your package manager's equivalent command, answer a few prompts, and you're ready to start building!
+
+> [!NOTE]
+> This project is maintained by the same folks behind `textmode.js`. For more information about `textmode.js`, visit the [official documentation](https://code.textmode.art/) or the [GitHub repository](https://github.com/humanbydefinition/textmode.js).
+>
+> The CLI is relatively new, so please report any issues or feature requests on the GitHub repo!
+
+## Requirements
+
+- Node.js 18+ *(per `engines`)*
+- One of: npm, pnpm, yarn, or bun on your PATH
+
+## Quick start *(interactive)*
 
 ```bash
 npm create textmode@latest
@@ -10,54 +33,58 @@ npm create textmode@latest
 pnpm create textmode@latest
 # or
 yarn create textmode
+# ...
 ```
 
-Non-interactive example:
+The CLI will prompt for project name, template, textmode.js version, installing dependencies, and starting the dev server.
+
+## Non-interactive examples
 
 ```bash
-npm create textmode@latest my-textmode-app -- --template react
+# TypeScript template, pin textmode.js, auto-install, do not run dev server
+npm create textmode@latest my-textmode-app -- --template vanilla-ts --textmode-version 0.7.1 --install --no-run
+
+# JavaScript template with pnpm, skip install and run
+pnpm create textmode@latest demo -- --template vanilla-js --pm pnpm --no-install --no-run
 ```
-
-## Templates
-
-- `vanilla-js` – Vite + plain JavaScript starter
-- `vanilla-ts` – Vite + TypeScript starter
 
 ## Options
 
-- `--template <name>`: choose one of the templates above (will prompt if omitted)
-- `--name <projectName>` or first positional arg: directory / package name (default: `textmode-app`)
-- `--textmode-version <ver>`: pin a specific textmode.js version (defaults to latest; will prompt if omitted)
-- `--pm <npm|pnpm|yarn|bun>`: force a package manager (auto-detected if omitted)
-- `--install/--no-install`: install dependencies after scaffold (prompts if omitted)
-- `--run/--no-run`: start the dev server after install (prompts if omitted)
-- `--force`: allow using an existing non-empty directory
+- `--template <name>`: choose a template *(prompts if omitted)*
+- `--name <projectName>` or first positional arg: directory/package name *(default suggestion if omitted)*
+- `--textmode-version <ver>`: pin textmode.js *(prompts from fetched stable versions; defaults to `latest`)*
+- `--pm <npm|pnpm|yarn|bun>`: force a package manager *(auto-detected otherwise)*
+- `--install` / `--no-install`: install dependencies after scaffold *(prompts if neither is provided)*
+- `--run` / `--no-run`: start the dev server after install *(prompts if neither is provided)*
+- `--force`: allow using a non-empty directory without prompting
 - `--help`: show usage
 - `--version`: show the CLI version
+
+## Templates
+
+| Template | Stack | Tooling |
+|:---------|:------|:--------|
+| `vanilla-js` | Vite + JavaScript + `textmode.js` | ESLint *(JS rules)*, Prettier, `.gitignore` |
+| `vanilla-ts` | Vite + TypeScript + `textmode.js` | `tsconfig`, ESLint *(@typescript-eslint)*, Prettier, `.gitignore`, `typecheck` |
+
+Adding new templates? Follow the same table format so details stay consistent and easy to scan.
 
 ## Local development
 
 ```bash
 npm install
-npm run dev -- --help # runs the CLI directly via node
+npm test          # vitest
+npm run test:verbose
+
+# Run CLI directly (no npm-create shim); no "--" needed
+node bin/index.js demo --template vanilla-js --pm pnpm --no-install --no-run
+# or
+node bin/index.js
+# ...
 ```
 
-To test the published shape without publishing:
+## Publishing
 
-```bash
-npm pack
-npm install -g ./create-textmode-0.1.0.tgz
-npm create textmode -- --help
-```
-
-## Next steps after scaffolding
-
-```bash
-cd <project-name>
-npm install
-npm run dev
-```
-
-## License
-
-MIT
+- Package name is `create-textmode.js`, so users can run `npm create textmode.js@latest …` (dots are allowed, just uncommon). If you prefer the dotless command, rename the package to `create-textmode` and users will run `npm create textmode@latest …` instead.
+- Before publishing: bump `version`, ensure the shebang stays in `bin/index.js`, and run `npm pack` to verify the tarball contents.
+- Publish steps: `npm login` once, then `npm publish` from the repo root (public by default via `publishConfig.access`).
