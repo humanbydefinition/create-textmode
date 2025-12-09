@@ -8,7 +8,7 @@ import { intro, outro, spinner, log } from '@clack/prompts';
 import { HEADER, templates } from './constants.js';
 import { detectPackageManager, pmCommands } from './packageManager.js';
 import { isEmptyDir, pathExists, scaffoldTemplate } from './fs-utils.js';
-import { runCommand } from './runCommand.js';
+import { runCommand, runCommandLogged } from './runCommand.js';
 import { printUsage } from './usage.js';
 import {
   promptInstall,
@@ -208,12 +208,22 @@ export async function run() {
   }
 
   if (doInstall) {
-    log.step(`Installing dependencies with ${pm}...`);
+    const installSpin = spinner();
+    installSpin.start(`Installing dependencies with ${pm}...`);
+    let seenOutput = false;
     try {
-      await runCommand(pm, pmCmds.install, targetDir);
+      await runCommandLogged(pm, pmCmds.install, targetDir, (line) => {
+        if (!seenOutput) {
+          installSpin.stop(`Installing dependencies with ${pm}...`);
+          seenOutput = true;
+        }
+        console.log(`│  ${line}`);
+      });
       installDone = true;
+      if (!seenOutput) installSpin.stop('Dependencies installed.');
       log.success('Dependencies installed.');
     } catch (err) {
+      installSpin.stop('Dependency installation failed.');
       log.error(`Dependency installation failed: ${err.message || err}`);
     }
   }
