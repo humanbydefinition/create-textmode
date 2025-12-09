@@ -4,7 +4,6 @@
   "description": "Scaffold textmode.js projects with zero friction",
   "type": "module",
   "bin": {
-    "create-textmode": "bin/index.js",
     "create-textmode.js": "bin/index.js"
   },
   "files": [
