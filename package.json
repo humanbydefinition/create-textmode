@@ -1,7 +1,7 @@
 {
   "name": "create-textmode.js",
   "version": "1.0.0",
-  "description": "Scaffold textmode.js projects via npm create textmode",
+  "description": "Scaffold textmode.js projects with zero friction",
   "type": "module",
   "bin": {
     "create-textmode": "bin/index.js",
