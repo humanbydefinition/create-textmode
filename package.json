@@ -1,10 +1,11 @@
 {
-  "name": "create-textmode",
+  "name": "create-textmode.js",
   "version": "0.1.0",
   "description": "Scaffold textmode.js projects via npm create textmode",
   "type": "module",
   "bin": {
-    "create-textmode": "bin/index.js"
+    "create-textmode": "bin/index.js",
+    "create-textmode.js": "bin/index.js"
   },
   "files": [
     "bin",
@@ -23,8 +24,19 @@
     "scaffold",
     "template"
   ],
-  "author": "",
+  "author": "humanbydefinition",
   "license": "MIT",
+  "homepage": "https://github.com/humanbydefinition/create-textmode.js#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/humanbydefinition/create-textmode.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/humanbydefinition/create-textmode.js/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "vitest",
     "test:verbose": "vitest run --reporter=verbose"
