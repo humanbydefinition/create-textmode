@@ -25,6 +25,10 @@
   ],
   "author": "",
   "license": "MIT",
+  "scripts": {
+    "test": "vitest",
+    "test:verbose": "vitest run --reporter=verbose"
+  },
   "dependencies": {
     "@clack/prompts": "^0.11.0",
     "boxen": "^7.1.1",
@@ -33,6 +37,7 @@
     "unique-names-generator": "^4.7.1"
   },
   "devDependencies": {
-    "textmode.js": "^0.7.1"
+    "textmode.js": "^0.7.1",
+    "vitest": "^4.0.15"
   }
 }
