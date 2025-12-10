@@ -58,12 +58,18 @@ pnpm create textmode@latest demo -- --template vanilla-js --pm pnpm --no-install
 
 ## Templates
 
-| Template | Stack | Tooling |
-|:---------|:------|:--------|
-| `vanilla-js` | Vite + JavaScript + `textmode.js` | ESLint *(JS rules)*, Prettier, `.gitignore` |
-| `vanilla-ts` | Vite + TypeScript + `textmode.js` | `tsconfig`, ESLint *(@typescript-eslint)*, Prettier, `.gitignore`, `typecheck` |
+All templates ship with Vite, `textmode.js`, Prettier, ESLint, and a `.gitignore`. TypeScript variants add `tsconfig` and a `typecheck` script. Below are the extras that differ by template:
 
-Adding new templates? Follow the same table format so details stay consistent and easy to scan.
+| Template | Flavor | Extras |
+|:---------|:-------|:-------|
+| `vanilla-js` | JavaScript | Base starter sketch |
+| `vanilla-ts` | TypeScript | Base starter sketch + TS config |
+| `vanilla-js-fxhash` | JavaScript + fx(hash) | Bundled `fxhash.min.js`, starter sketch using `$fx` API and features |
+| `vanilla-ts-fxhash` | TypeScript + fx(hash) | Bundled `fxhash.min.js`, `$fx` typings, starter sketch using `$fx` API and features |
+| `vanilla-js-tweakpane` | JavaScript + Tweakpane | UI controls wired with Tweakpane |
+| `vanilla-ts-tweakpane` | TypeScript + Tweakpane | UI controls wired with Tweakpane + TS config |
+
+Adding new templates? Keep the shared tooling note above and only list what’s unique in the table.
 
 ## Local development
 
