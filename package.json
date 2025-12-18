@@ -48,7 +48,7 @@
     "unique-names-generator": "^4.7.1"
   },
   "devDependencies": {
-    "textmode.js": "^0.8.0",
+    "textmode.js": "^0.8.1",
     "vitest": "^4.0.15"
   }
 }
