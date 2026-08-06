@@ -115,7 +115,7 @@ export async function wireAddonsIntoSketch(targetDir, addons) {
         /(plugins:\s*\[)([^\]]*)(\])/,
         (m, p1, p2, p3) => p1 + (p2.trim() ? `${p2.trim()}, ` : '') + pluginsStr + p3
       );
-      return open + merged.trim() + ' ' + close;
+      return open + ' ' + merged.trim() + ' ' + close;
     }
     const inner = body.trim();
     return open + (inner ? ` ${inner}, ` : ' ') + `plugins: [${pluginsStr}] ` + close;
