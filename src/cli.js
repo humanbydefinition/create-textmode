@@ -7,8 +7,9 @@ import { detectPackageManager, pmCommands } from './packageManager.js';
 import { isEmptyDir, pathExists, scaffoldTemplate } from './fs-utils.js';
 import { runCommand, runCommandLogged } from './runCommand.js';
 import { printUsage } from './usage.js';
-import { templates } from './constants.js';
+import { addons, templates } from './constants.js';
 import {
+  promptAddons,
   promptInstall,
   promptProjectName,
   promptRun,
@@ -18,7 +19,8 @@ import {
   promptTextmodeVersion
 } from './prompts.js';
 import { printHeader } from './banner.js';
-import { parseArgv, ensureKnownTemplate } from './args.js';
+import { parseArgv, ensureKnownAddons, ensureKnownTemplate, parseAddons } from './args.js';
+import { compareSemverDesc } from './versions.js';
 import { resolveTextmodeVersion } from './textmodeVersion.js';
 import { printSummary } from './summary.js';
 
@@ -62,11 +64,28 @@ export async function run() {
   const template = templates.find((t) => t.name === templateName);
   const templateDir = path.join(__dirname, '..', 'templates', template.dir);
 
+  // --- Resolve add-ons ---
+  ensureKnownAddons(argv.addons);
+  let selectedAddons = parseAddons(argv.addons);
+  if (selectedAddons.length === 0 && !argv.addons) {
+    selectedAddons = (await promptAddons())
+      .map((name) => addons.find((a) => a.name === name))
+      .filter(Boolean);
+  }
+
+  // Add-ons peer-depend on a minimum textmode.js version; pass it through so
+  // the version picker only offers compatible versions.
+  const minTextmode = selectedAddons.reduce((max, a) => {
+    if (!max) return a.minTextmode;
+    return compareSemverDesc(a.minTextmode, max) > 0 ? max : a.minTextmode;
+  }, null);
+
   // --- Resolve textmode.js version ---
   const requestedTextmodeVersion = argv['textmode-version'];
   const { textmodeVersion } = await resolveTextmodeVersion(
     requestedTextmodeVersion,
-    promptTextmodeVersion
+    promptTextmodeVersion,
+    { minTextmode }
   );
 
   // --- Pre-scaffold checks ---
@@ -85,7 +104,7 @@ export async function run() {
   // --- Scaffold project ---
   const scaffoldSpin = spinner();
   scaffoldSpin.start('Scaffolding project...');
-  await scaffoldTemplate({ templateDir, targetDir, projectName, textmodeVersion });
+  await scaffoldTemplate({ templateDir, targetDir, projectName, textmodeVersion, addons: selectedAddons });
   scaffoldSpin.stop('Scaffold complete.');
 
   // --- Install dependencies ---
@@ -147,7 +166,7 @@ export async function run() {
 
   // --- Summary ---
   log.message('');
-  printSummary({ projectName, pm, pmCmds, installDone, runDone });
+  printSummary({ projectName, pm, pmCmds, installDone, runDone, addons: selectedAddons });
   outro(kleur.green('Enjoy textmode.js! ツ'));
 }
 

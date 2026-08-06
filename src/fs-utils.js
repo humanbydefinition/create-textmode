@@ -75,11 +75,62 @@ export async function setTextmodeVersion(targetDir, textmodeVersion) {
   }
 }
 
-export async function scaffoldTemplate({ templateDir, targetDir, projectName, textmodeVersion }) {
+export async function addAddonDependencies(targetDir, addons) {
+  if (!addons || addons.length === 0) return;
+  const pkgPath = path.join(targetDir, 'package.json');
+  try {
+    const pkg = JSON.parse(await readFile(pkgPath, 'utf8'));
+    if (!pkg.dependencies) pkg.dependencies = {};
+    for (const addon of addons) {
+      pkg.dependencies[addon.package] = 'latest';
+    }
+    await writeFile(pkgPath, JSON.stringify(pkg, null, 2));
+  } catch (err) {
+    // Ignore templates without package.json or invalid JSON.
+  }
+}
+
+export async function wireAddonsIntoSketch(targetDir, addons) {
+  if (!addons || addons.length === 0) return;
+
+  const tsPath = path.join(targetDir, 'src', 'sketch.ts');
+  const filePath = (await pathExists(tsPath)) ? tsPath : path.join(targetDir, 'src', 'sketch.js');
+  if (!(await pathExists(filePath))) return;
+
+  let data = await readFile(filePath, 'utf8');
+
+  // Insert add-on imports directly after the textmode.js import.
+  const importLines = addons.map((a) => `import { ${a.plugin} } from '${a.package}';`).join('\n');
+  data = data.replace(
+    /(import\s*\{[^}]*textmode[^}]*\}\s*from\s*'textmode\.js';)/,
+    `$1\n${importLines}`
+  );
+
+  // Register the plugins on the textmode.create({...}) call.
+  const pluginsStr = addons.map((a) => a.plugin).join(', ');
+  data = data.replace(/(textmode\.create\(\{)([^}]*)(\}\))/, (match, open, body, close) => {
+    if (/\bplugins\s*:/.test(body)) {
+      // Existing plugins key: append to the array.
+      const merged = body.replace(
+        /(plugins:\s*\[)([^\]]*)(\])/,
+        (m, p1, p2, p3) => p1 + (p2.trim() ? `${p2.trim()}, ` : '') + pluginsStr + p3
+      );
+      return open + merged.trim() + ' ' + close;
+    }
+    const inner = body.trim();
+    return open + (inner ? ` ${inner}, ` : ' ') + `plugins: [${pluginsStr}] ` + close;
+  });
+
+  await writeFile(filePath, data, 'utf8');
+}
+
+export async function scaffoldTemplate({ templateDir, targetDir, projectName, textmodeVersion, addons = [] }) {
   await mkdir(targetDir, { recursive: true });
   await cp(templateDir, targetDir, { recursive: true, force: true });
 
   await replacePlaceholders(targetDir, projectName);
   await setPackageName(targetDir, projectName);
   await setTextmodeVersion(targetDir, textmodeVersion);
+  await addAddonDependencies(targetDir, addons);
+  await wireAddonsIntoSketch(targetDir, addons);
 }
