@@ -43,10 +43,15 @@ export function ensureKnownAddons(names) {
 
 export function parseAddons(names) {
   if (!names) return [];
-  return names
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean)
+
+  const uniqueNames = [...new Set(
+    names
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)
+  )];
+
+  return uniqueNames
     .map((name) => addons.find((a) => a.name === name))
     .filter(Boolean);
 }
