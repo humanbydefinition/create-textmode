@@ -108,8 +108,11 @@ All official textmode.js add-on libraries are supported. When selected, the CLI 
 ## Local development
 
 ```bash
-npm install
-npm test          # vitest
+npm install        # also installs git hooks (commitlint, lint-staged, pre-push protection)
+npm run check      # lint + test
+npm run lint       # node --check syntax gate
+npm test           # vitest (run once)
+npm run test:watch # vitest (watch mode)
 npm run test:verbose
 
 # Run CLI directly (no npm-create shim); no "--" needed
