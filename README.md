@@ -94,12 +94,6 @@ All official textmode.js add-on libraries are supported. When selected, the CLI 
 | `figlet` | `textmode.figlet.js` | `FigletPlugin` |
 | `filters` | `textmode.filters.js` | `FiltersPlugin` |
 
-## Next steps
-
-- **[Read the documentation](https://code.textmode.art/)** for core concepts, guides, and installation details.
-- **[Follow the installation guide](https://code.textmode.art/docs/installation)** to install `textmode.js` and official add-ons in a scaffolded project.
-- **[Try the live editor](https://editor.textmode.art/)** to sketch interactively in the browser.
-
 ## Local development
 
 ```bash
@@ -107,8 +101,6 @@ npm install        # also installs git hooks (commitlint, lint-staged, pre-push 
 npm run check      # lint + test
 npm run lint       # node --check syntax gate
 npm test           # vitest (run once)
-npm run test:watch # vitest (watch mode)
-npm run test:verbose
 
 # Run CLI directly (no npm-create shim); no "--" needed
 node bin/index.js demo --template vanilla-js --pm pnpm --no-install --no-run
