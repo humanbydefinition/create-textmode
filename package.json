@@ -24,7 +24,7 @@
     "template"
   ],
   "author": "humanbydefinition",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "homepage": "https://github.com/humanbydefinition/create-textmode#readme",
   "repository": {
     "type": "git",
@@ -37,8 +37,12 @@
     "access": "public"
   },
   "scripts": {
-    "test": "vitest",
-    "test:verbose": "vitest run --reporter=verbose"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:verbose": "vitest run --reporter=verbose",
+    "lint": "node --check bin/index.js && node --check src/*.js && node --check tests/*.js",
+    "check": "npm run lint && npm run test",
+    "prepare": "install-git-hooks"
   },
   "dependencies": {
     "@clack/prompts": "^0.11.0",
@@ -48,7 +52,19 @@
     "unique-names-generator": "^4.7.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^21.2.1",
+    "@textmode/commitlint-config": "^0.1.1",
+    "@textmode/tooling-scripts": "^0.5.0",
+    "lint-staged": "^17.0.8",
     "textmode.js": "^0.8.1",
-    "vitest": "^4.0.15"
+    "vitest": "^4.1.10"
+  },
+  "commitlint": {
+    "extends": [
+      "@textmode/commitlint-config"
+    ]
+  },
+  "lint-staged": {
+    "*.{js,mjs,cjs}": "node --check"
   }
 }

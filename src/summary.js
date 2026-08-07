@@ -1,7 +1,7 @@
 import kleur from 'kleur';
 import boxen from 'boxen';
 
-export function printSummary({ projectName, pm, pmCmds, installDone, runDone }) {
+export function printSummary({ projectName, pm, pmCmds, installDone, runDone, addons = [] }) {
   const installCmd = `${pm} ${pmCmds.install.join(' ')}`;
   const runCmd = `${pm} ${pmCmds.runDev.join(' ')}`;
 
@@ -13,8 +13,18 @@ export function printSummary({ projectName, pm, pmCmds, installDone, runDone }) 
     .filter(Boolean)
     .join('\n');
 
+  const addonLines =
+    addons.length > 0
+      ? [
+          '',
+          '',
+          kleur.bold().cyan('Add-ons installed:'),
+          addons.map((a) => `  ${a.label}`).join('\n')
+        ].join('\n')
+      : '';
+
   const infoLines = [
-    '',
+    addonLines,
     '',
     kleur.bold().cyan('Helpful links:'),
     `${kleur.cyan('  Documentation:')} https://code.textmode.art`,

@@ -1,8 +1,8 @@
 import path from 'path';
-import { confirm, isCancel, cancel, select, text } from '@clack/prompts';
+import { confirm, isCancel, cancel, multiselect, select, text } from '@clack/prompts';
 import kleur from 'kleur';
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
-import { templates } from './constants.js';
+import { addons, templates } from './constants.js';
 
 /**
  * Handle user cancellation uniformly.
@@ -26,6 +26,18 @@ export async function promptTemplate() {
 
   handleCancel(choice);
   return choice;
+}
+
+export async function promptAddons() {
+  const selection = await multiselect({
+    message: `${kleur.cyan('Select add-on libraries to pre-install')} ${kleur.gray('(space to toggle, ↵ confirm, none = skip)')}`,
+    options: addons.map((a) => ({ value: a.name, label: a.label, hint: a.description })),
+    required: false,
+    initialValue: []
+  });
+
+  handleCancel(selection);
+  return Array.isArray(selection) ? selection : [];
 }
 
 export function suggestProjectName() {
@@ -79,7 +91,7 @@ export async function promptRun(pm) {
 
 export async function promptTextmodeVersion(options) {
   const choice = await select({
-    message: `${kleur.cyan('Select textmode.js version')} ${kleur.gray('(latest recommended)')}`,
+    message: `${kleur.cyan('Select textmode.js version')} ${kleur.gray('(latest recommended, >= 0.17.1)')}`,
     options,
     initialValue: options[0]?.value,
     maxItems: 5
