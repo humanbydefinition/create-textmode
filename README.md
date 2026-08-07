@@ -2,26 +2,36 @@
 
 <div align="center">
 
-A zero-friction scaffolder for `textmode.js`.
+<img alt="create-textmode — scaffold textmode.js with zero friction" src=".github/assets/readme-og.png" />
 
-| [![JavaScript](https://img.shields.io/badge/JavaScript-323330?logo=javascript&logoColor=F7DF1E)](https://developer.mozilla.org/docs/Web/JavaScript) [![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/) | [![textmode.js](https://img.shields.io/badge/github-textmode.js-111827?logo=github&logoColor=white)](https://github.com/humanbydefinition/textmode.js) [![docs](https://img.shields.io/badge/docs-vitepress-646cff?logo=vitepress&logoColor=white)](https://code.textmode.art/) [![Discord](https://img.shields.io/discord/1357070706181017691?color=5865F2&label=Discord&logo=discord&logoColor=white)](https://discord.gg/sjrw8QXNks) | [![ko-fi](https://shields.io/badge/ko--fi-donate-ff5f5f?logo=ko-fi)](https://ko-fi.com/V7V8JG2FY) [![Github-sponsors](https://img.shields.io/badge/sponsor-30363D?logo=GitHub-Sponsors&logoColor=#EA4AAA)](https://github.com/sponsors/humanbydefinition) |
-|:-------------|:-------------|:-------------|
+| [![JavaScript](https://img.shields.io/badge/JavaScript-323330?logo=javascript&logoColor=F7DF1E)](https://developer.mozilla.org/docs/Web/JavaScript) [![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/) | [![textmode.js](https://img.shields.io/badge/github-textmode.js-111827?logo=github&logoColor=white)](https://github.com/humanbydefinition/textmode.js) [![docs](https://img.shields.io/badge/docs-vitepress-646cff?logo=vitepress&logoColor=white)](https://code.textmode.art/) [![Discord](https://img.shields.io/discord/1357070706181017691?color=5865F2&label=Discord&logo=discord&logoColor=white)](https://discord.gg/sjrw8QXNks) | [![ko-fi](https://shields.io/badge/ko--fi-donate-ff5f5f?logo=ko-fi)](https://ko-fi.com/V7V8JG2FY) [![GitHub-sponsors](https://img.shields.io/badge/sponsor-30363D?logo=GitHub-Sponsors&logoColor=#EA4AAA)](https://github.com/sponsors/humanbydefinition) |
+|:---|:---|:---|
 
 </div>
 
-`create-textmode.js` is a command-line tool to quickly scaffold new projects using `textmode.js` with sensible defaults and minimal friction.
+`create-textmode` is a command-line tool to quickly scaffold new projects using `textmode.js` with sensible defaults and minimal friction.
 
 Just run the CLI via `npm create textmode@latest` or your package manager's equivalent command, answer a few prompts, and you're ready to start building!
 
-> [!NOTE]
-> The CLI is still fresh out of the oven, so please report any issues or feature requests on the GitHub repo!
+## Features
+
+- **One-command scaffolding** - Start a new project with `npm create textmode@latest` or your package manager's equivalent
+- **Interactive prompts** - Choose project name, template, textmode.js version, official add-ons, dependency installation, and dev server startup
+- **JavaScript and TypeScript templates** - Vanilla starters plus Tweakpane-controlled UI variants
+- **Package-manager aware** - Auto-detect npm, pnpm, yarn, or bun
+- **Non-interactive flags** - Full CLI options for scripts and CI
+- **Sensible defaults** - Vite, `textmode.js`, Prettier, ESLint, and a `.gitignore`; TypeScript variants add `tsconfig` and a `typecheck` script
+
+## Try it online first
+
+Open [editor.textmode.art](https://editor.textmode.art/), a browser-based live-coding environment for the complete official `textmode.js` ecosystem, to try textmode.js before or alongside scaffolding; sketches run as you edit, with no local toolchain required.
 
 ## Requirements
 
 - Node.js 18+ *(per `engines`)*
 - One of: npm, pnpm, yarn, or bun on your PATH
 
-## Quick start *(interactive)*
+## Quick start
 
 ```bash
 npm create textmode@latest
@@ -88,6 +98,13 @@ All official textmode.js add-on libraries are supported. When selected, the CLI 
 > Add-ons require `textmode.js >= 0.16.0`. If you pin an older textmode.js version while
 > selecting add-ons, the CLI will auto-upgrade to `latest` with a warning.
 
+## Next steps
+
+- **[Read the documentation](https://code.textmode.art/)** for core concepts, guides, and installation details.
+- **[Follow the installation guide](https://code.textmode.art/docs/installation)** to install `textmode.js` and official add-ons in a scaffolded project.
+- **[Explore the examples gallery](https://examples.textmode.art/textmode.js/)** for runnable sketches and patterns.
+- **[Try the live editor](https://editor.textmode.art/)** to sketch interactively in the browser.
+
 ## Local development
 
 ```bash
@@ -101,3 +118,13 @@ node bin/index.js demo --template vanilla-js --pm pnpm --no-install --no-run
 node bin/index.js
 # ...
 ```
+
+## Contributing
+
+Thank you for considering contributing to this project! (✿◠‿◠)
+
+Please read the [Contributing Guide](https://code.textmode.art/docs/contributing/code) to get started, and follow the [Code of Conduct](./CODE_OF_CONDUCT.md) in all community spaces.
+
+## License
+
+`create-textmode` is licensed under the [MIT License](./LICENSE).
