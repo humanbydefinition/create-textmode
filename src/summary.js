@@ -17,6 +17,7 @@ export function printSummary({ projectName, pm, pmCmds, installDone, runDone, ad
     addons.length > 0
       ? [
           '',
+          '',
           kleur.bold().cyan('Add-ons installed:'),
           addons.map((a) => `  ${a.label}`).join('\n')
         ].join('\n')
@@ -24,7 +25,6 @@ export function printSummary({ projectName, pm, pmCmds, installDone, runDone, ad
 
   const infoLines = [
     addonLines,
-    '',
     '',
     kleur.bold().cyan('Helpful links:'),
     `${kleur.cyan('  Documentation:')} https://code.textmode.art`,
