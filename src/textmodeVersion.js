@@ -1,12 +1,8 @@
 import { spinner, log } from '@clack/prompts';
-import { compareSemverDesc, getTextmodeVersions } from './versions.js';
+import { compareSemverDesc, getTextmodeVersions, filterAtLeast } from './versions.js';
+import { MIN_TEXTMODE_VERSION } from './constants.js';
 
-export async function resolveTextmodeVersion(
-  requestedTextmodeVersion,
-  promptTextmodeVersion,
-  options = {}
-) {
-  const { minTextmode } = options;
+export async function resolveTextmodeVersion(requestedTextmodeVersion, promptTextmodeVersion) {
   let textmodeVersion = 'latest';
   let stableVersions = [];
 
@@ -23,14 +19,10 @@ export async function resolveTextmodeVersion(
     textmodeVersion = 'latest';
   }
 
-  // When add-ons are selected, only offer versions that satisfy the peer
-  // dependency (e.g. >= 0.16.0).
-  let eligibleVersions = stableVersions;
-  if (minTextmode) {
-    eligibleVersions = stableVersions.filter(
-      (v) => compareSemverDesc(v, minTextmode) <= 0
-    );
-  }
+  // Only offer versions at or above the global minimum (e.g. >= 0.17.1).
+  // Every official add-on peer-depends on a lower floor, so this also covers
+  // add-on compatibility.
+  const eligibleVersions = filterAtLeast(stableVersions, MIN_TEXTMODE_VERSION);
 
   const latestVersion = eligibleVersions[0] || stableVersions[0];
   const availableOptions = [
@@ -47,9 +39,9 @@ export async function resolveTextmodeVersion(
       textmodeVersion = requestedTextmodeVersion;
     } else if (stableVersions.includes(requestedTextmodeVersion)) {
       textmodeVersion = requestedTextmodeVersion;
-      if (minTextmode && compareSemverDesc(requestedTextmodeVersion, minTextmode) > 0) {
+      if (compareSemverDesc(requestedTextmodeVersion, MIN_TEXTMODE_VERSION) > 0) {
         log.warn(
-          `Add-ons require textmode.js >= ${minTextmode}, but ${requestedTextmodeVersion} is older. Upgrading to latest.`
+          `textmode.js must be >= ${MIN_TEXTMODE_VERSION}, but ${requestedTextmodeVersion} is older. Upgrading to latest.`
         );
         textmodeVersion = 'latest';
       }

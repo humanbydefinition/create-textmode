@@ -39,6 +39,10 @@ export function compareSemverDesc(a, b) {
   return 0;
 }
 
+export function filterAtLeast(versions, min) {
+  return versions.filter((v) => compareSemverDesc(v, min) <= 0);
+}
+
 export async function getTextmodeVersions(limit = 20) {
   if (cachedVersions) return cachedVersions.slice(0, limit);
 

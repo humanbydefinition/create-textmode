@@ -20,7 +20,6 @@ import {
 } from './prompts.js';
 import { printHeader } from './banner.js';
 import { parseArgv, ensureKnownAddons, ensureKnownTemplate, parseAddons } from './args.js';
-import { compareSemverDesc } from './versions.js';
 import { resolveTextmodeVersion } from './textmodeVersion.js';
 import { printSummary } from './summary.js';
 
@@ -73,19 +72,13 @@ export async function run() {
       .filter(Boolean);
   }
 
-  // Add-ons peer-depend on a minimum textmode.js version; pass it through so
-  // the version picker only offers compatible versions.
-  const minTextmode = selectedAddons.reduce((max, a) => {
-    if (!max) return a.minTextmode;
-    return compareSemverDesc(a.minTextmode, max) > 0 ? max : a.minTextmode;
-  }, null);
-
   // --- Resolve textmode.js version ---
+  // Only versions >= the global minimum are offered; add-ons are always at
+  // their latest version, so they impose no additional floor here.
   const requestedTextmodeVersion = argv['textmode-version'];
   const { textmodeVersion } = await resolveTextmodeVersion(
     requestedTextmodeVersion,
-    promptTextmodeVersion,
-    { minTextmode }
+    promptTextmodeVersion
   );
 
   // --- Pre-scaffold checks ---

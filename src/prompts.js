@@ -91,7 +91,7 @@ export async function promptRun(pm) {
 
 export async function promptTextmodeVersion(options) {
   const choice = await select({
-    message: `${kleur.cyan('Select textmode.js version')} ${kleur.gray('(latest recommended)')}`,
+    message: `${kleur.cyan('Select textmode.js version')} ${kleur.gray('(latest recommended, >= 0.17.1)')}`,
     options,
     initialValue: options[0]?.value,
     maxItems: 5

@@ -15,8 +15,8 @@ async function createTempDir() {
 }
 
 const addons = [
-  { name: 'synth', label: 'textmode.synth.js', package: 'textmode.synth.js', plugin: 'SynthPlugin', minTextmode: '0.16.0' },
-  { name: 'export', label: 'textmode.export.js', package: 'textmode.export.js', plugin: 'ExportPlugin', minTextmode: '0.16.0' }
+  { name: 'synth', label: 'textmode.synth.js', package: 'textmode.synth.js', plugin: 'SynthPlugin' },
+  { name: 'export', label: 'textmode.export.js', package: 'textmode.export.js', plugin: 'ExportPlugin' }
 ];
 
 describe('fs-utils', () => {

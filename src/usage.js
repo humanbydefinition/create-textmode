@@ -10,7 +10,7 @@ export function printUsage() {
   console.log('  --addons <name1,name2,...> Pre-install official textmode.js add-ons');
   console.log('  --name <name>              Project directory name (alias: positional arg)');
   console.log('  --pm <npm|pnpm|yarn|bun>   Force package manager (auto-detected if omitted)');
-  console.log('  --textmode-version <ver>   Pin textmode.js version (default: latest, prompts if omitted)');
+  console.log('  --textmode-version <ver>   Pin textmode.js version (default: latest; only >= 0.17.1 offered)');
   console.log('  --install / --no-install   Install dependencies after scaffold');
   console.log('  --run / --no-run           Run dev server after install');
   console.log('  --force                    Allow using a non-empty directory');
