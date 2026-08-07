@@ -16,7 +16,7 @@ Just run the CLI via `npm create textmode@latest` or your package manager's equi
 ## Features
 
 - **One-command scaffolding** - Start a new project with `npm create textmode@latest` or your package manager's equivalent
-- **Interactive prompts** - Choose project name, template, textmode.js version, dependency installation, and dev server startup
+- **Interactive prompts** - Choose project name, template, textmode.js version, official add-ons, dependency installation, and dev server startup
 - **JavaScript and TypeScript templates** - Vanilla starters plus Tweakpane-controlled UI variants
 - **Package-manager aware** - Auto-detect npm, pnpm, yarn, or bun
 - **Non-interactive flags** - Full CLI options for scripts and CI
@@ -42,7 +42,7 @@ yarn create textmode
 # ...
 ```
 
-The CLI will prompt for project name, template, textmode.js version, installing dependencies, and starting the dev server.
+The CLI will prompt for project name, template, textmode.js version, official add-ons, installing dependencies, and starting the dev server.
 
 ## Non-interactive examples
 
@@ -52,11 +52,15 @@ npm create textmode@latest my-textmode-app -- --template vanilla-ts --textmode-v
 
 # JavaScript template with pnpm, skip install and run
 pnpm create textmode@latest demo -- --template vanilla-js --pm pnpm --no-install --no-run
+
+# Pre-install the synth and export add-ons and wire their plugins into the starter sketch
+npm create textmode@latest audio-art -- --template vanilla-js --addons synth,export --install --no-run
 ```
 
 ## Options
 
 - `--template <name>`: choose a template *(prompts if omitted)*
+- `--addons <name1,name2,...>`: pre-install official textmode.js add-ons and wire their plugins into the starter sketch *(prompts via multi-select if omitted)*
 - `--name <projectName>` or first positional arg: directory/package name *(default suggestion if omitted)*
 - `--textmode-version <ver>`: pin textmode.js *(prompts from fetched stable versions; defaults to `latest`)*
 - `--pm <npm|pnpm|yarn|bun>`: force a package manager *(auto-detected otherwise)*
@@ -78,6 +82,21 @@ All templates ship with Vite, `textmode.js`, Prettier, ESLint, and a `.gitignore
 | `vanilla-ts-tweakpane` | TypeScript + Tweakpane | UI controls wired with Tweakpane + TS config |
 
 Adding new templates? Keep the shared tooling note above and only list what’s unique in the table.
+
+## Add-ons
+
+All official textmode.js add-on libraries are supported. When selected, the CLI adds the package to your `dependencies` and registers its plugin on the `textmode.create({ ... })` call in the starter sketch.
+
+| Id | Package | Latest plugin export | Requires |
+|:---|:--------|:---------------------|:---------|
+| `export` | `textmode.export.js` | `ExportPlugin` | textmode.js ≥ 0.16.0 |
+| `synth` | `textmode.synth.js` | `SynthPlugin` | textmode.js ≥ 0.16.0 |
+| `figlet` | `textmode.figlet.js` | `FigletPlugin` | textmode.js ≥ 0.16.0 |
+| `filters` | `textmode.filters.js` | `FiltersPlugin` | textmode.js ≥ 0.16.0 |
+
+> [!NOTE]
+> Add-ons require `textmode.js >= 0.16.0`. If you pin an older textmode.js version while
+> selecting add-ons, the CLI will auto-upgrade to `latest` with a warning.
 
 ## Next steps
 

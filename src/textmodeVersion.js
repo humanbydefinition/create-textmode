@@ -1,7 +1,12 @@
 import { spinner, log } from '@clack/prompts';
-import { getTextmodeVersions } from './versions.js';
+import { compareSemverDesc, getTextmodeVersions } from './versions.js';
 
-export async function resolveTextmodeVersion(requestedTextmodeVersion, promptTextmodeVersion) {
+export async function resolveTextmodeVersion(
+  requestedTextmodeVersion,
+  promptTextmodeVersion,
+  options = {}
+) {
+  const { minTextmode } = options;
   let textmodeVersion = 'latest';
   let stableVersions = [];
 
@@ -18,13 +23,22 @@ export async function resolveTextmodeVersion(requestedTextmodeVersion, promptTex
     textmodeVersion = 'latest';
   }
 
-  const latestVersion = stableVersions[0];
+  // When add-ons are selected, only offer versions that satisfy the peer
+  // dependency (e.g. >= 0.16.0).
+  let eligibleVersions = stableVersions;
+  if (minTextmode) {
+    eligibleVersions = stableVersions.filter(
+      (v) => compareSemverDesc(v, minTextmode) <= 0
+    );
+  }
+
+  const latestVersion = eligibleVersions[0] || stableVersions[0];
   const availableOptions = [
     {
       value: 'latest',
       label: latestVersion ? `latest (${latestVersion})` : 'latest (recommended)'
     },
-    ...stableVersions.slice(1).map((v) => ({ value: v, label: v }))
+    ...eligibleVersions.slice(1).map((v) => ({ value: v, label: v }))
   ];
 
   if (requestedTextmodeVersion) {
@@ -33,11 +47,17 @@ export async function resolveTextmodeVersion(requestedTextmodeVersion, promptTex
       textmodeVersion = requestedTextmodeVersion;
     } else if (stableVersions.includes(requestedTextmodeVersion)) {
       textmodeVersion = requestedTextmodeVersion;
+      if (minTextmode && compareSemverDesc(requestedTextmodeVersion, minTextmode) > 0) {
+        log.warn(
+          `Add-ons require textmode.js >= ${minTextmode}, but ${requestedTextmodeVersion} is older. Upgrading to latest.`
+        );
+        textmodeVersion = 'latest';
+      }
     } else {
       log.warn(`Requested textmode.js@${requestedTextmodeVersion} not found; using latest instead.`);
       textmodeVersion = 'latest';
     }
-  } else if (stableVersions.length > 0) {
+  } else if (eligibleVersions.length > 0) {
     textmodeVersion = await promptTextmodeVersion(availableOptions);
   }
 
