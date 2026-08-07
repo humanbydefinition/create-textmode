@@ -2,19 +2,16 @@
 
 <div align="center">
 
-A zero-friction scaffolder for `textmode.js`.
+<img alt="create-textmode — scaffold textmode.js with zero friction" src=".github/assets/readme-og.png" />
 
 | [![JavaScript](https://img.shields.io/badge/JavaScript-323330?logo=javascript&logoColor=F7DF1E)](https://developer.mozilla.org/docs/Web/JavaScript) [![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/) | [![textmode.js](https://img.shields.io/badge/github-textmode.js-111827?logo=github&logoColor=white)](https://github.com/humanbydefinition/textmode.js) [![docs](https://img.shields.io/badge/docs-vitepress-646cff?logo=vitepress&logoColor=white)](https://code.textmode.art/) [![Discord](https://img.shields.io/discord/1357070706181017691?color=5865F2&label=Discord&logo=discord&logoColor=white)](https://discord.gg/sjrw8QXNks) | [![ko-fi](https://shields.io/badge/ko--fi-donate-ff5f5f?logo=ko-fi)](https://ko-fi.com/V7V8JG2FY) [![Github-sponsors](https://img.shields.io/badge/sponsor-30363D?logo=GitHub-Sponsors&logoColor=#EA4AAA)](https://github.com/sponsors/humanbydefinition) |
-|:-------------|:-------------|:-------------|
+|:---|:---|:---|
 
 </div>
 
 `create-textmode.js` is a command-line tool to quickly scaffold new projects using `textmode.js` with sensible defaults and minimal friction.
 
 Just run the CLI via `npm create textmode@latest` or your package manager's equivalent command, answer a few prompts, and you're ready to start building!
-
-> [!NOTE]
-> The CLI is still fresh out of the oven, so please report any issues or feature requests on the GitHub repo!
 
 ## Requirements
 
