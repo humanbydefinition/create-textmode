@@ -125,4 +125,4 @@ Please read the [Contributing Guide](https://code.textmode.art/docs/contributing
 
 ## License
 
-`create-textmode` is licensed under the [MIT License](./LICENSE).
+`create-textmode` is licensed under the [AGPL-3.0 License](./LICENSE).
