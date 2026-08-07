@@ -9,7 +9,7 @@
 
 </div>
 
-`create-textmode.js` is a command-line tool to quickly scaffold new projects using `textmode.js` with sensible defaults and minimal friction.
+`create-textmode` is a command-line tool to quickly scaffold new projects using `textmode.js` with sensible defaults and minimal friction.
 
 Just run the CLI via `npm create textmode@latest` or your package manager's equivalent command, answer a few prompts, and you're ready to start building!
 
