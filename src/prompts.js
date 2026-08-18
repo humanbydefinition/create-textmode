@@ -2,7 +2,7 @@ import path from 'path';
 import { confirm, isCancel, cancel, multiselect, select, text } from '@clack/prompts';
 import kleur from 'kleur';
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
-import { addons, templates } from './constants.js';
+import { addons, templates, MIN_TEXTMODE_VERSION } from './constants.js';
 
 /**
  * Handle user cancellation uniformly.
@@ -92,7 +92,7 @@ export async function promptRun(pm) {
 
 export async function promptTextmodeVersion(options) {
 	const choice = await select({
-		message: `${kleur.cyan('Select textmode.js version')} ${kleur.gray('(latest recommended, >= 0.17.1)')}`,
+		message: `${kleur.cyan('Select textmode.js version')} ${kleur.gray(`(latest recommended, >= ${MIN_TEXTMODE_VERSION})`)}`,
 		options,
 		initialValue: options[0]?.value,
 		maxItems: 5,

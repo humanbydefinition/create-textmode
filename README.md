@@ -48,7 +48,7 @@ The CLI will prompt for project name, template, textmode.js version, official ad
 
 ```bash
 # TypeScript template, pin textmode.js, auto-install, do not run dev server
-npm create textmode@latest my-textmode-app -- --template vanilla-ts --textmode-version 0.17.1 --install --no-run
+npm create textmode@latest my-textmode-app -- --template vanilla-ts --textmode-version 0.17.2 --install --no-run
 
 # JavaScript template with pnpm, skip install and run
 pnpm create textmode@latest demo -- --template vanilla-js --pm pnpm --no-install --no-run
@@ -62,7 +62,7 @@ npm create textmode@latest audio-art -- --template vanilla-js --addons synth,exp
 - `--template <name>`: choose a template *(prompts if omitted)*
 - `--addons <name1,name2,...>`: pre-install official textmode.js add-ons and wire their plugins into the starter sketch *(prompts via multi-select if omitted)*
 - `--name <projectName>` or first positional arg: directory/package name *(default suggestion if omitted)*
-- `--textmode-version <ver>`: pin textmode.js *(prompts from fetched stable versions >= 0.17.1; defaults to `latest`)*
+- `--textmode-version <ver>`: pin textmode.js *(prompts from fetched stable versions >= 0.17.2; defaults to `latest`)*
 - `--pm <npm|pnpm|yarn|bun>`: force a package manager *(auto-detected otherwise)*
 - `--install` / `--no-install`: install dependencies after scaffold *(prompts if neither is provided)*
 - `--run` / `--no-run`: start the dev server after install *(prompts if neither is provided)*
@@ -98,9 +98,9 @@ All official textmode.js add-on libraries are supported. When selected, the CLI 
 
 ```bash
 npm install        # also installs git hooks (commitlint, lint-staged, pre-push protection)
-npm run check      # lint + test
-npm run lint       # node --check syntax gate
-npm test           # vitest (run once)
+npm run check      # format check + lint + test
+npm run lint       # ESLint across codebase
+npm test           # Vitest (run once)
 
 # Run CLI directly (no npm-create shim); no "--" needed
 node bin/index.js demo --template vanilla-js --pm pnpm --no-install --no-run

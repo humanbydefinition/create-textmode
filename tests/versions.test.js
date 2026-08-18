@@ -15,13 +15,13 @@ describe('versions helpers', () => {
 	});
 
 	it('filters versions at or above a minimum, preserving order', () => {
-		const versions = ['0.17.0', '0.17.1', '0.18.0', '0.16.0'];
-		const filtered = filterAtLeast(versions, '0.17.1');
-		expect(filtered).toEqual(['0.17.1', '0.18.0']);
+		const versions = ['0.17.0', '0.17.1', '0.17.2', '0.18.0', '0.16.0'];
+		const filtered = filterAtLeast(versions, '0.17.2');
+		expect(filtered).toEqual(['0.17.2', '0.18.0']);
 	});
 
 	it('keeps versions equal to the minimum', () => {
-		expect(filterAtLeast(['0.17.1'], '0.17.1')).toEqual(['0.17.1']);
-		expect(filterAtLeast([], '0.17.1')).toEqual([]);
+		expect(filterAtLeast(['0.17.2'], '0.17.2')).toEqual(['0.17.2']);
+		expect(filterAtLeast([], '0.17.2')).toEqual([]);
 	});
 });

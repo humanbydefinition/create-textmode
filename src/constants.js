@@ -50,7 +50,7 @@ export const addons = [
 
 // Minimum textmode.js version the scaffolder will offer. All official add-ons
 // peer-depend on a lower bound well below this floor, so it also covers them.
-export const MIN_TEXTMODE_VERSION = '0.17.1';
+export const MIN_TEXTMODE_VERSION = '0.17.2';
 
 // File name patterns considered text for placeholder replacement.
 export const TEXT_FILE_REGEX = /\.(json|js|jsx|ts|tsx|vue|md|html|txt|cjs|mjs)$/i;
