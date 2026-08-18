@@ -49,6 +49,7 @@
 		"access": "public"
 	},
 	"scripts": {
+		"build": "echo \"No build required\"",
 		"test": "textmode-build test",
 		"test:watch": "textmode-build test:watch",
 		"format": "textmode-lint format",
