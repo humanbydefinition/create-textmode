@@ -56,6 +56,7 @@
 		"lint": "textmode-lint lint .",
 		"lint:markdown": "textmode-lint lint:markdown",
 		"check": "npm run format:check && npm run lint && npm run test",
+		"release": "textmode-release release",
 		"prepare": "textmode-release hooks"
 	},
 	"dependencies": {
