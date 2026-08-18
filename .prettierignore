@@ -1,0 +1,7 @@
+templates/
+node_modules/
+dist/
+package-lock.json
+
+# Markdown files use dedicated tooling or hand-maintained formatting.
+**/*.md
