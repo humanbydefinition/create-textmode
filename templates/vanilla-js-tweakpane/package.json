@@ -9,19 +9,19 @@
     "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{js,ts}\"",
     "format:check": "prettier --check \"src/**/*.{js,ts}\"",
-    "lint": "eslint src --ext .js",
-    "lint:fix": "eslint src --ext .js --fix"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "textmode.js": "latest",
     "tweakpane": "^4.0.5"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "eslint": "^9.39.1",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.8.1",
     "eslint-config-prettier": "^10.1.8",
-    "globals": "^15.14.0",
-    "prettier": "^3.7.4",
-    "vite": "^7.2.7"
+    "globals": "^16.0.0",
+    "prettier": "^3.9.5",
+    "vite": "^8.1.3"
   }
 }
