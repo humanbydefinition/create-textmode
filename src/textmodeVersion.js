@@ -19,7 +19,7 @@ export async function resolveTextmodeVersion(requestedTextmodeVersion, promptTex
 		textmodeVersion = 'latest';
 	}
 
-	// Only offer versions at or above the global minimum (e.g. >= 0.17.1).
+	// Only offer versions at or above the global minimum (e.g. >= 0.18.0).
 	// Every official add-on peer-depends on a lower floor, so this also covers
 	// add-on compatibility.
 	const eligibleVersions = filterAtLeast(stableVersions, MIN_TEXTMODE_VERSION);

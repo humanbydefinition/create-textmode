@@ -71,6 +71,6 @@
 		"@textmode/build": "^0.1.0",
 		"@textmode/lint": "^0.1.0",
 		"@textmode/release": "^0.2.1",
-		"textmode.js": "^0.17.2"
+		"textmode.js": "^0.18.0"
 	}
 }
