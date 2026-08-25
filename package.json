@@ -1,6 +1,6 @@
 {
 	"name": "create-textmode",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "Scaffold textmode.js projects with zero friction",
 	"type": "module",
 	"bin": {
@@ -36,7 +36,7 @@
 		"template"
 	],
 	"author": "humanbydefinition",
-	"license": "AGPL-3.0",
+	"license": "AGPL-3.0-or-later",
 	"homepage": "https://github.com/humanbydefinition/create-textmode#readme",
 	"repository": {
 		"type": "git",
