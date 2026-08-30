@@ -23,7 +23,6 @@ export function printSummary({ projectName, pm, pmCmds, installDone, runDone, ad
 		'',
 		kleur.bold().cyan('Helpful links:'),
 		`${kleur.cyan('  Documentation:')} https://code.textmode.art`,
-		`${kleur.cyan('  Community:')} https://discord.gg/sjrw8QXNks`,
 		`${kleur.cyan('  CLI issues:')} https://github.com/humanbydefinition/create-textmode/issues`,
 	].join('\n');
 
