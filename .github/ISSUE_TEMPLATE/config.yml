@@ -15,3 +15,6 @@ contact_links:
     - name: GitHub Discussions
       url: https://github.com/humanbydefinition/create-textmode/discussions
       about: Ask questions, propose ideas, or start design discussions about the scaffolder.
+    - name: Discord
+      url: https://discord.gg/sjrw8QXNks
+      about: Ask usage questions or discuss the scaffolder before filing an issue.
